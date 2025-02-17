@@ -1,10 +1,13 @@
-import { Box, TextField, Button, Typography } from '@mui/material';
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+// Main
+import {Box, TextField, Button, Typography} from '@mui/material';
+import {useForm, Controller} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 // Config
-import { routes } from '../../../configs/routes/default';
+import {routes} from '../../../configs/routes/default';
+// Services
+import {loginApi} from '../../../configs/axois/instance.ts';
 
 
 interface LoginFormInputs {
@@ -19,16 +22,23 @@ const schema = yup.object().shape({
 });
 
 const Login = () => {
-    const { control, handleSubmit } = useForm<LoginFormInputs>({
+    const {control, handleSubmit} = useForm<LoginFormInputs>({
         resolver: yupResolver(schema),
     });
 
     const navigate = useNavigate();
 
-    const onSubmit = (data: LoginFormInputs) => {
-        navigate(routes.flights.flights.path);
-        console.log('ورود موفق:', data);
+    const onSubmit = async (data: LoginFormInputs) => {
+        console.log('Form data submitted:', data); // Log form data to check what is being submitted
+        try {
+            const response = await loginApi({username: 'admin', password: 'password'});
+            navigate(routes.flights.flights.path);
+            console.log('ورود موفق:', response);
+        } catch (error) {
+            console.error('Login failed:', error);
+        }
     };
+
 
     return (
         <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
@@ -41,7 +51,7 @@ const Login = () => {
                         name="email"
                         control={control}
                         defaultValue=""
-                        render={({ field, fieldState }) => (
+                        render={({field, fieldState}) => (
                             <TextField
                                 {...field}
                                 label="ایمیل"
@@ -56,7 +66,7 @@ const Login = () => {
                         name="password"
                         control={control}
                         defaultValue=""
-                        render={({ field, fieldState }) => (
+                        render={({field, fieldState}) => (
                             <TextField
                                 {...field}
                                 label="رمز عبور"
@@ -68,7 +78,7 @@ const Login = () => {
                             />
                         )}
                     />
-                    <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+                    <Button type="submit" variant="contained" color="primary" fullWidth sx={{mt: 2}}>
                         ورود
                     </Button>
                 </form>

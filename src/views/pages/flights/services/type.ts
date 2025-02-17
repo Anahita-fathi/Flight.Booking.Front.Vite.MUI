@@ -29,3 +29,7 @@ export type  FlightListParamsTypes = {
     destination?: string;
     date?: string;
 }
+export type  ReserveDataTypes = {
+    username: string;
+    flightId: number;
+}

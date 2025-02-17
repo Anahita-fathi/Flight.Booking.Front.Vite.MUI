@@ -1,8 +1,11 @@
+// Main
 import {Typography} from '@mui/material';
+// Components
 import SearchFlight from '../../components/search_flight';
 import ExistedFlights from '../../components/existed_flights';
 import AddGuess from '../../components/add_guess';
 import Booking from '../../components/booking';
+// Types
 import {Flight, FlightListParamsTypes, Guest, ReservationDetails} from '../../services/type';
 
 interface FlightBookingStepsProps {
